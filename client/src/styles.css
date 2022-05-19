@@ -1,0 +1,286 @@
+.rainbow-color {
+  background-image: linear-gradient(to left, violet, indigo, blue);
+}
+
+.navbar-style {
+  height: 130px;
+  position: fixed;
+  top: 0;
+  width: 100%;
+}
+
+.navbar-text {
+  font-weight: bold;
+}
+
+.navbar-home-button {
+  fill: #ffffff;
+}
+.navbar-home-button:hover {
+  fill: gold;
+}
+
+.navbar-link-title:hover {
+  color: gold;
+}
+
+#navbarScrollingDropdown {
+  color: white;
+}
+
+#navbarScrollingDropdown:hover {
+  color: gold;
+}
+
+.navbar-link-color {
+  color: "white";
+}
+
+.navbar-link-color:hover {
+  color: gold;
+}
+
+@media only screen and (max-width: 990px) {
+  .nav-button-style {
+    background-color: blue;
+    background-image: linear-gradient(to left, violet, indigo, blue);
+  }
+}
+
+@media only screen and (max-width: 460px) {
+  .navbar-link-title {
+    font-size: 30px;
+  }
+
+  .navbar-home-button {
+    transform: scale(0.9);
+  }
+}
+
+@media only screen and (max-width: 380px) {
+  .navbar-link-title {
+    font-size: 25px;
+  }
+
+  .navbar-home-button {
+    transform: scale(0.7);
+  }
+}
+
+@media only screen and (max-width: 380px) {
+  .navbar-link-title {
+    font-size: 18px;
+  }
+}
+
+.title-style {
+  margin-left: 3%;
+}
+
+.botton-style {
+  height: 180px;
+}
+
+/*TODO: fix this later */
+.title-style2 {
+  text-align: center;
+  font-size: 5vw;
+  padding-top: 6%;
+  padding-bottom: 0%;
+  margin-left: 26%;
+  margin-right: 25%;
+}
+
+.image-style {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  width: 100%;
+  align-items: center;
+  justify-content: center;
+}
+
+.paragraph-style1 {
+  align-items: "center";
+  padding-top: 15%;
+  padding-left: 3%;
+  padding-right: 3%;
+}
+.paragraph-style2 {
+  align-items: "center";
+  padding-bottom: 15%;
+  padding-left: 3%;
+  padding-right: 3%;
+}
+
+.btn {
+  margin-left: 3%;
+}
+
+.btn[aria-expanded="true"] {
+  opacity: 0.6;
+  cursor: not-allowed !important;
+  pointer-events: none;
+}
+
+input[value="vapaa"] {
+  background-color: #d5f3fe;
+  border: none;
+  color: #0275d8;
+  font-weight: bold;
+}
+
+input[value="varaa"] {
+  background-color: #d5f3fe;
+  border: none;
+  color: red;
+  font-weight: bold;
+  font-weight: bold;
+  cursor: not-allowed !important;
+}
+input[value="varattu"] {
+  background-color: #d5f3fe;
+  border: none;
+  color: gray;
+  cursor: not-allowed !important;
+}
+
+.calender-button {
+  background-color: #0275d8;
+  border-radius: 12px;
+  color: white;
+  padding: 5px 20px;
+  text-decoration: none;
+  margin: 4px 2px;
+  cursor: pointer;
+}
+
+button[type="submit"] {
+  background-color: #0275d8;
+  border-radius: 12px;
+  color: white;
+  padding: 5px 20px;
+  text-decoration: none;
+  margin: 4px 2px;
+  cursor: pointer;
+}
+
+.reset-button {
+  background-color: gray;
+  border-radius: 12px;
+  color: white;
+  padding: 5px 20px;
+  text-decoration: none;
+  margin: 4px 2px;
+  cursor: pointer;
+}
+
+#image {
+  background-image: url("./images/booking.jpg");
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-attachment: fixed;
+  height: 750px;
+  width: 100%;
+}
+
+.bookerinfo-button {
+  width: 200px;
+}
+
+.bookerinfo-title {
+  margin-bottom: 5%;
+}
+
+.bookerinfo-label {
+  margin-top: 3%;
+  margin-bottom: 3%;
+}
+
+.bookerinfo-button {
+  background-color: #0275d8;
+  border-radius: 12px;
+  color: white;
+  padding: 5px 20px;
+  text-decoration: none;
+}
+
+.bookerinfo-button2 {
+  background-color: gray;
+  border-radius: 12px;
+  color: white;
+  padding: 5px 20px;
+  text-decoration: none;
+  margin-top: 8%;
+  cursor: pointer;
+  margin-left: 2%;
+  margin-bottom: 15%;
+}
+
+.bookerinfo-button3 {
+  background-color: #0275d8;
+  border-radius: 12px;
+  color: white;
+  padding: 5px 20px;
+  text-decoration: none;
+  margin-top: 8%;
+  cursor: pointer;
+  margin-left: 2%;
+  margin-bottom: 15%;
+}
+
+.grid-container {
+  display: grid;
+  grid-template-columns: auto auto auto;
+  padding: 10px;
+  margin-bottom: 20%;
+}
+
+.some1-style {
+  color: white;
+  padding-right: 30px;
+}
+
+.some2-style {
+  color: white;
+}
+
+.some1-style:hover {
+  color: gold;
+}
+
+.some2-style:hover {
+  color: gold;
+}
+
+.some-margin {
+  margin-top: 60px;
+  margin-left: 30%;
+}
+
+.container-info {
+  display: flex;
+  gap: 0px 80px;
+  flex-direction: row;
+}
+
+@media (max-width: 800px) {
+  .container-info {
+    flex-direction: column;
+  }
+}
+
+.flex-item-left {
+  flex: 30%;
+  margin-bottom: 40px;
+  text-align: center;
+}
+
+.flex-item-right {
+  flex: 70%;
+  margin-bottom: 60px;
+}
+
+.text-center {
+  font-size: 30px;
+}
