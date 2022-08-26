@@ -1,133 +1,199 @@
-import React, { useState } from "react";
+import React from "react";
 import Register from "./Register";
 import { useNavigate } from "react-router-dom";
-import swal from "sweetalert";
 import tennisappDatabase from "../services/tennisappDatabase";
+import Alert from "./Alerts";
+import { Formik, Form } from "formik";
+import { useSelector, useDispatch } from "react-redux";
 
 function Logging({ rightBooker }) {
-  const [user, setUser] = useState([]);
-  const [userEmail, setUserEmail] = useState("");
-  const [userPassword, setUserPassword] = useState("");
-  const [registered, setRegistered] = useState(true);
+  const dispatch = useDispatch();
+  const logging = useSelector((state) => state.logging);
 
   const navigate = useNavigate();
 
-  const handleEmail = (e) => {
-    setUserEmail(e.target.value);
-  };
+  const handleLogging = (values) => {
+    if (values.email === "" || values.password === "") {
+      values = {
+        email: "not_acceptable",
+        password: "not_acceptable",
+      };
+    }
 
-  const handlePassword = (e) => {
-    setUserPassword(e.target.value);
-  };
-
-  const handleLoging = () => {
     tennisappDatabase
-      .getBooker(userEmail, userPassword)
+      .getBooker(values.email, values.password)
       .then((initialBooker) => {
-        setUser(initialBooker[0]);
         if (initialBooker[0] !== undefined) {
           const booking = {
             ...rightBooker,
             email: initialBooker[0].email,
           };
-          swal({
-            title: "Haluatko varmasti varata seuraavan vuoron:",
-            text: `${rightBooker.date} klo ${rightBooker.time}, ${rightBooker.field}`,
-            icon: "success",
-            buttons: true,
-            dangerMode: false,
-          }).then((willSave) => {
+
+          Alert(
+            "Haluatko varmasti varata seuraavan vuoron:",
+            `${rightBooker.date} klo ${rightBooker.time}, ${rightBooker.field}`,
+            "",
+            true,
+            false
+          ).then((willSave) => {
             if (willSave) {
               tennisappDatabase.createBooking(booking);
 
-              setUserEmail("");
-              setUserPassword("");
-              setRegistered(true);
-
-              swal({
-                title: "Kiitos varauksestasi!",
-                text: "Voit tarkastella varauksiasi Varaukset-sivulta.",
-                icon: "success",
-                button: "Ok!",
+              dispatch({
+                type: "logging/registeredTrue",
+                payload: true,
               });
+
+              Alert(
+                "Kiitos varauksestasi!",
+                "Voit tarkastella varauksiasi Varaukset-sivulta.",
+                "success",
+                "Ok!",
+                false
+              );
+
               navigate("/");
             } else {
-              swal("Varaus ei tallentunut!");
+              Alert("", "Varaus ei tallentunut!", "", [false, true], false);
             }
           });
         } else {
-          swal("Kirjautumistietosi ovat virheelliset! Varaus ei onnistunut.");
-          setUserEmail("");
-          setUserPassword("");
-          setRegistered(true);
+          Alert(
+            "",
+            "Kirjautumistietosi ovat virheelliset!",
+            "",
+            [false, true],
+            false
+          );
+
+          dispatch({
+            type: "logging/registeredTrue",
+            payload: true,
+          });
         }
       })
 
       .catch((err) => {
         console.log(err.message);
-        swal("Kirjautumistietojasi ovat virheelliset! Varaus ei onnistunut.");
+        Alert(
+          "",
+          "Kirjautumistietojasi ovat virheelliset! Varaus ei onnistunut.",
+          "",
+          [false, true],
+          false
+        );
       });
   };
 
-  const handleRegisterInfo = () => {
-    setRegistered(false);
+  const handleRegisterInfo = (e) => {
+    e.preventDefault();
+
+    dispatch({
+      type: "logging/registeredFalse",
+      payload: false,
+    });
   };
 
   return (
-    <div style={{ marginBottom: "8%", textAlign: "center" }}>
-      {registered === true ? (
+    <div style={{ marginBottom: "8%" }}>
+      {logging === true ? (
         <div>
-          <form>
-            <div className="form-group">
-              <h3 className="bookerinfo-title">Kirjaudu sisälle:</h3>
-              <div>
-                <label className="bookerinfo-label" name="email">
-                  Sähköpostiosoite:
-                </label>
-              </div>
+          <Formik
+            initialValues={{ email: "", password: "" }}
+            validate={(values) => {
+              const errors = {};
+              if (!values.email) {
+                errors.email = "Täytä";
+              } else if (
+                !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(values.email)
+              ) {
+                errors.email = "Virheellinen sähköpostiosoite";
+              }
+              if (!values.password) {
+                errors.password = "Täytä";
+              }
+              return errors;
+            }}
+            onSubmit={(values, { resetForm, setSubmitting }) => {
+              handleLogging(values);
 
-              <input
-                type="email"
-                className="form-control"
-                id="email"
-                placeholder="Sähköposti"
-                name="email"
-                value={userEmail}
-                onChange={handleEmail}
-              />
-              <div>
+              resetForm({ values: "" });
+              setSubmitting(false);
+            }}
+          >
+            {({
+              values,
+              handleChange,
+              handleSubmit,
+              isSubmitting,
+              errors,
+              touched,
+            }) => (
+              <Form className="logging-form" onSubmit={handleSubmit}>
                 <div className="form-group">
-                  <label className="bookerinfo-label" name="password">
-                    Salasana:
-                  </label>
-                </div>
-                <input
-                  type="password"
-                  className="form-control"
-                  id="password"
-                  placeholder="Salasana"
-                  name="password"
-                  value={userPassword}
-                  onChange={handlePassword}
-                />
-                <button
-                  onClick={handleLoging}
-                  type="button"
-                  className="bookerinfo-button"
-                >
-                  Varaa
-                </button>
+                  <h3>Kirjaudu sisälle:</h3>
+                  <div>
+                    <label className="bookerinfo-label" name="email">
+                      Sähköpostiosoite:
+                    </label>
+                  </div>
 
-                <button
-                  type="button"
-                  className="bookerinfo-button2"
-                  onClick={handleRegisterInfo}
-                >
-                  Rekisteröidy
-                </button>
-              </div>
-            </div>{" "}
-          </form>
+                  <input
+                    type="email"
+                    className="form-control"
+                    id="email"
+                    placeholder="Sähköposti"
+                    name="email"
+                    value={values.email}
+                    onChange={handleChange}
+                  />
+                  {errors.email && touched.email && (
+                    <p style={{ color: "red", fontStyle: "italic" }}>
+                      {errors.email}
+                    </p>
+                  )}
+                  <div>
+                    <div className="form-group">
+                      <label className="bookerinfo-label" name="password">
+                        Salasana:
+                      </label>
+
+                      <input
+                        type="password"
+                        className="form-control"
+                        id="password"
+                        placeholder="Salasana"
+                        name="password"
+                        value={values.password}
+                        onChange={handleChange}
+                      />
+                      {errors.password && touched.password && (
+                        <p style={{ color: "red", fontStyle: "italic" }}>
+                          {errors.password}
+                        </p>
+                      )}
+                    </div>
+
+                    <button
+                      type="submit"
+                      disabled={isSubmitting}
+                      className="btn btn-primary button-style-primary"
+                    >
+                      Varaa
+                    </button>
+
+                    <button
+                      type="button"
+                      class="btn btn-secondary button-style-secondary"
+                      onClick={handleRegisterInfo}
+                    >
+                      Rekisteröidy
+                    </button>
+                  </div>
+                </div>
+              </Form>
+            )}
+          </Formik>
         </div>
       ) : (
         <div>

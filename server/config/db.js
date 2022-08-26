@@ -2,17 +2,23 @@ require("dotenv").config();
 
 const mysql = require("mysql2");
 
-var db = mysql.createPool({
-  connectionLimit: 10,
-  host: "localhost",
-  user: "root",
-  password: process.env.MYSQL_PASSWORD,
-  database: "tennisapp",
-});
+let DATABASE = process.env.NODE_ENV === "test" ? "test_tennisapp" : "tennisapp";
 
-db.query("SELECT 1 + 1 AS solution", function (error, results, fields) {
-  if (error) throw error;
-  console.log("The solution is: ", results[0].solution);
+// local connection:
+// var db = mysql.createPool({
+//   connectionLimit: 10,
+//   host: process.env.LOCAL_HOST,
+//   user: process.env.LOCAL_USER,
+//   password: process.env.MYSQL_PASSWORD,
+//   database: DATABASE,
+// });
+
+var db = mysql.createPool({
+  connectionLimit: 50,
+  host: process.env.DB_HOST,
+  user: process.env.DB_USER,
+  password: process.env.DB_PASSWORD,
+  database: process.env.DB_DATABASE,
 });
 
 module.exports = db;

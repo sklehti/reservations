@@ -1,14 +1,13 @@
 import React from "react";
-import Image2 from "../images/home-page2.jpg";
-
+import Image1 from "../images/home-page2.jpg";
 import Image from "react-bootstrap/Image";
 
 function HomePage() {
   return (
-    <div>
-      <h1 className="title-style2">Tervetuloa Turun Tennisklubin sivuille!</h1>
-      <div>
-        <p className="paragraph-style1">
+    <div style={{ textAlign: "center" }}>
+      <h1 className="title-style">Tervetuloa Turun tennisklubin sivuille!</h1>
+      <div className="paragraph-style1">
+        <p>
           Sed nibh nunc, commodo eget laoreet ut, fermentum at sem. Pellentesque
           habitant morbi tristique senectus et netus et malesuada fames ac
           turpis egestas. Sed ac ex sit amet erat interdum molestie. Proin
@@ -20,7 +19,7 @@ function HomePage() {
           diam, euismod lacinia velit orci eu enim. Vestibulum vulputate congue
           aliquam.
         </p>
-        <p className="paragraph-style2">
+        <p>
           Sed nibh nunc, commodo eget laoreet ut, fermentum at sem. Pellentesque
           habitant morbi tristique senectus et netus et malesuada fames ac
           turpis egestas. Sed ac ex sit amet erat interdum molestie. Proin
@@ -32,14 +31,12 @@ function HomePage() {
           diam, euismod lacinia velit orci eu enim. Vestibulum vulputate congue
           aliquam.
         </p>
-        <Image
-          alt="etusivun kuva"
-          src={Image2}
-          style={{ width: "100%" }}
-          className=" img-fluid center"
-        />
-        <p className="paragraph-style2"></p>
       </div>
+      <Image
+        alt="etusivun kuva"
+        src={Image1}
+        className="img-fluid image-style2"
+      />
     </div>
   );
 }

@@ -1,148 +1,197 @@
-import React, { useState } from "react";
+import React from "react";
 import { useNavigate } from "react-router-dom";
-import swal from "sweetalert";
+import Alert from "./Alerts";
 import tennisappDatabase from "../services/tennisappDatabase";
+import { Formik, Form } from "formik";
 
 function Register({ rightBooker }) {
-  const [bookersName, setBookersName] = useState("");
-  const [bookersAdress, setBookersAddress] = useState("");
-  const [bookersEmail, setBookersEmail] = useState("");
-  const [bookersPassword, setBookersPassword] = useState("");
-
   const navigate = useNavigate();
 
-  const handleName = (e) => {
-    setBookersName(e.target.value);
-  };
-
-  const handleAddress = (e) => {
-    setBookersAddress(e.target.value);
-  };
-
-  const handleEmail = (e) => {
-    setBookersEmail(e.target.value);
-  };
-
-  const handlePassword = (e) => {
-    setBookersPassword(e.target.value);
-  };
-
-  const handleSubmit = () => {
+  const handleSubmit = (values) => {
     const booking = {
       ...rightBooker,
-      name: bookersName,
-      address: bookersAdress,
-      email: bookersEmail,
-      password: bookersPassword,
+      name: values.name,
+      address: values.address,
+      email: values.email,
+      password: values.password,
     };
 
     if (
-      bookersName.length > 0 &&
-      bookersAdress.length > 0 &&
-      bookersEmail.length > 0 &&
-      bookersPassword.length > 0
+      values.name.length > 0 &&
+      values.address.length > 0 &&
+      values.email.length > 0 &&
+      values.password.length > 0
     ) {
       tennisappDatabase
         .getUserEmail(booking.email)
         .then((initialUser) => {
           if (initialUser[0].lkm < 1) {
-            swal({
-              title: "Haluatko varmasti varata seuraavan vuoron:",
-              text: `${rightBooker.date} klo ${rightBooker.time}, ${rightBooker.field}`,
-              icon: "success",
-              buttons: true,
-              dangerMode: false,
-            }).then((willSave) => {
+            Alert(
+              "Haluatko varmasti varata seuraavan vuoron:",
+              `${rightBooker.date} klo ${rightBooker.time}, ${rightBooker.field}`,
+              "success",
+              true,
+              false
+            ).then((willSave) => {
               if (willSave) {
-                swal({
-                  title: "Kiitos varauksestasi!",
-                  text: "Voit tarkastella varauksiasi Varaukset-sivulta.",
-                  icon: "success",
-                  button: "Ok!",
-                });
+                Alert(
+                  "Kiitos varauksestasi!",
+                  "Voit tarkastella varauksiasi Varaukset-sivulta.",
+                  "success",
+                  "Ok!",
+                  false
+                );
+
                 tennisappDatabase.createUserWithBooking(booking);
 
                 navigate("/");
               } else {
-                swal("Varaus ei tallentunut!");
+                Alert("", "Varaus ei tallentunut!", "", [false, true], false);
               }
             });
           } else {
-            swal("Kirjautumistietosi ovat virheelliset! Varaus ei onnistunut.");
+            Alert(
+              "",
+              "Kirjautumistietosi ovat virheelliset tai kyseiset tunnukset ovat jo olemassa! Varaus ei onnistunut.",
+              "",
+              [false, true],
+              false
+            );
           }
         })
 
         .catch((err) => {
-          swal("Kirjautumistietosi ovat virheelliset! Varaus ei onnistunut.");
+          Alert(
+            "",
+            "Kirjautumistietosi ovat virheelliset! Varaus ei onnistunut.",
+            "",
+            [false, true],
+            false
+          );
         });
-      setBookersName("");
-      setBookersAddress("");
-      setBookersEmail("");
-      setBookersPassword("");
     } else {
-      swal("Täytä kaikki kentät!");
+      Alert("", "Täytä kaikki tekstikentät!", "", [false, true], false);
     }
   };
 
   return (
     <div>
-      <form>
-        <div className="form-group">
-          <label name="name">Nimi:</label>
-          <input
-            type="text"
-            className="form-control"
-            id="name"
-            placeholder="Nimi"
-            name="name"
-            value={bookersName}
-            onChange={handleName}
-          />
-        </div>
-        <div className="form-group">
-          <label name="pwd">Osoite:</label>
-          <input
-            type="text"
-            className="form-control"
-            id="pwd"
-            placeholder="Osoite"
-            name="pwd"
-            value={bookersAdress}
-            onChange={handleAddress}
-          />
-        </div>
-        <div className="form-group">
-          <label name="email">Sähköposti:</label>
-          <input
-            type="email"
-            className="form-control"
-            id="email"
-            placeholder="Sähköposti"
-            name="email"
-            value={bookersEmail}
-            onChange={handleEmail}
-          />
-          <div className="form-group">
-            <label name="password">Salasana:</label>
-            <input
-              type="password"
-              className="form-control"
-              id="password"
-              placeholder="salasana"
-              name="password"
-              value={bookersPassword}
-              onChange={handlePassword}
-            />
-          </div>
-        </div>
-        <button
-          className="bookerinfo-button"
-          type="button"
-          onClick={handleSubmit}
-        >
-          Varaa
-        </button>
-      </form>
+      <Formik
+        initialValues={{ name: "", address: "", email: "", password: "" }}
+        validate={(values) => {
+          const errors = {};
+          if (!values.name) {
+            errors.name = "Täytä";
+          }
+          if (!values.address) {
+            errors.address = "Täytä";
+          }
+          if (!values.email) {
+            errors.email = "Täytä";
+          } else if (
+            !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(values.email)
+          ) {
+            errors.email = "Virheellinen sähköpostiosoite";
+          }
+          if (!values.password) {
+            errors.password = "Täytä";
+          }
+          return errors;
+        }}
+        onSubmit={(values, { resetForm, setSubmitting }) => {
+          handleSubmit(values);
+          resetForm({ values: "" });
+          setSubmitting(false);
+        }}
+      >
+        {({
+          values,
+          handleChange,
+          handleSubmit,
+          isSubmitting,
+          errors,
+          touched,
+        }) => (
+          <Form className="logging-form" onSubmit={handleSubmit}>
+            <div className="form-group">
+              <label name="name">Nimi:</label>
+              <input
+                type="text"
+                className="form-control"
+                id="name"
+                placeholder="Nimi"
+                name="name"
+                value={values.name}
+                onChange={handleChange}
+              />
+              {errors.name && touched.name && (
+                <p style={{ color: "red", fontStyle: "italic" }}>
+                  {errors.name}
+                </p>
+              )}
+            </div>
+            <div className="form-group">
+              <label name="address">Osoite:</label>
+              <input
+                type="text"
+                className="form-control"
+                id="address"
+                placeholder="Osoite"
+                name="address"
+                value={values.address}
+                onChange={handleChange}
+              />
+              {errors.address && touched.address && (
+                <p style={{ color: "red", fontStyle: "italic" }}>
+                  {errors.address}
+                </p>
+              )}
+            </div>
+            <div className="form-group">
+              <label name="email">Sähköposti:</label>
+              <input
+                type="email"
+                className="form-control"
+                id="email"
+                placeholder="Sähköposti"
+                name="email"
+                value={values.email}
+                onChange={handleChange}
+              />
+              {errors.email && touched.email && (
+                <p style={{ color: "red", fontStyle: "italic" }}>
+                  {errors.email}
+                </p>
+              )}
+            </div>
+            <div className="form-group">
+              <label name="password">Salasana:</label>
+              <input
+                type="password"
+                className="form-control"
+                id="password"
+                placeholder="salasana"
+                name="password"
+                value={values.password}
+                onChange={handleChange}
+              />
+              {errors.password && touched.password && (
+                <p style={{ color: "red", fontStyle: "italic" }}>
+                  {errors.password}
+                </p>
+              )}
+            </div>
+
+            <button
+              className="btn btn-primary"
+              type="submit"
+              disabled={isSubmitting}
+            >
+              Varaa
+            </button>
+          </Form>
+        )}
+      </Formik>
     </div>
   );
 }

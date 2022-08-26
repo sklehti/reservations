@@ -1,0 +1,18 @@
+{
+  "files": {
+    "main.css": "/static/css/main.01b8033a.css",
+    "main.js": "/static/js/main.b49beb65.js",
+    "static/media/home-page2.jpg": "/static/media/home-page2.b43796d595b64b0e943a.jpg",
+    "static/media/contact-page.jpg": "/static/media/contact-page.a31a57ef1053ca37db55.jpg",
+    "static/media/booking.jpg": "/static/media/booking.cbe0c52cc88a947c23ce.jpg",
+    "static/media/topical-page_2.jpg": "/static/media/topical-page_2.af03d2b64eef1f5e6df1.jpg",
+    "static/media/gamebuddy-page.jpg": "/static/media/gamebuddy-page.cca1730099a35952010a.jpg",
+    "index.html": "/index.html",
+    "main.01b8033a.css.map": "/static/css/main.01b8033a.css.map",
+    "main.b49beb65.js.map": "/static/js/main.b49beb65.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.01b8033a.css",
+    "static/js/main.b49beb65.js"
+  ]
+}

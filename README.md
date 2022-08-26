@@ -1,5 +1,7 @@
-## To run locally
+## The application is running:
 
-- `npm i`
-- `npm start`
-- Open the app on http://localhost:3000/
+- https://tennis-app-backend.herokuapp.com/
+
+## Manual (in Finnish only):
+
+- [sovelluksen käyttö-ohjeet](sovelluksen_kaytto-ohjeet.md)
