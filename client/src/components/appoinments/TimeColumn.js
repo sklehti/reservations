@@ -16,6 +16,7 @@ function TimeColumn({ handleReserve, time, row, bookers }) {
             <input
               type="button"
               value="vapaa"
+              className="time-column-style"
               onClick={(e) => handleReserve(e, index, row)}
             />
           )}

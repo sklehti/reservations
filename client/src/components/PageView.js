@@ -45,7 +45,7 @@ function PageView() {
           <Navbar.Toggle aria-controls="navbarScroll" />
           <Navbar.Collapse id="navbarScroll" className="navbar-text">
             <Nav className="ml-auto">
-              <Nav.Link href="/topical" style={{ color: "white" }}>
+              <Nav.Link href="/topical" id="navbar-title-style">
                 <div>Ajankohtaista</div>
               </Nav.Link>
 
@@ -61,13 +61,13 @@ function PageView() {
                 </NavDropdown.Item>
               </NavDropdown>
 
-              <Nav.Link href="/gameBuddy" style={{ color: "white" }}>
+              <Nav.Link href="/gameBuddy" id="navbar-title-style">
                 <div>Pelikaveri</div>
               </Nav.Link>
 
               <Nav.Link
                 href="/contacts"
-                style={{ color: "white" }}
+                id="navbar-title-style"
                 className="navbar-hover"
               >
                 <div>Yhteystiedot</div>

@@ -105,6 +105,14 @@ textarea {
   font-weight: bold;
 }
 
+#navbar-title-style {
+  color: #ffffff;
+}
+
+#navbar-title-style:hover {
+  color: gold;
+}
+
 .navbar-titles:hover {
   color: gold;
 }
@@ -115,6 +123,10 @@ textarea {
 
 #navbarScrollingDropdown:hover {
   color: gold;
+}
+
+.time-column-style:hover {
+  color: darkblue;
 }
 
 @media only screen and (max-width: 460px) {
